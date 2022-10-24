@@ -17,6 +17,7 @@ var productRouter = require('./modules/product-management/routes');
 var cartRouter = require('./modules/cart-management/routes');
 var orderRouter = require('./modules/order-management/routes');
 var favoriteRouter = require('./modules/favorite-management/routes');
+var bannerRouter = require('./modules/banner-management/routes');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use('/product', productRouter);
 app.use('/cart', cartRouter);
 app.use('/order', orderRouter);
 app.use('/favorite', favoriteRouter);
+app.use('/banner', bannerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
