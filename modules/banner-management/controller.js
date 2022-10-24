@@ -29,10 +29,10 @@ async function create(req, res) {
         return error(req, res, validate);
     }
 
-    if(req.file){
-        let image = `http://localhost:3000/img/${file.filename}`
-        body = {...body,image : image}
-    }
+    // if(req.file){
+    //     let image = `http://localhost:3000/img/${file.filename}`
+    //     body = {...body,image : image}
+    // }
 
     const result = await Banners.createData(req.body);
     return success(req, res, result);
