@@ -21,7 +21,8 @@ let generateToken = (user, secretSignature = accessTokenSecret, tokenLife = acce
             id: user._id,
             email: user.email,
             fullname: user.fullname,
-            phone : user.phone
+            phone : user.phone,
+            role : user.role
         }
 
         // Thực hiện ký và tạo token

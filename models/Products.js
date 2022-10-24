@@ -8,12 +8,12 @@ module.exports = mongoose => {
             description: { type: Array, required: false },
             images: { type: Array, required: false },
             costPrice: { type: Number, required: true },
-            salePrice: { type: Number, required: true },
-            salePercent: { type: Number, required: true },
+            salePrice: { type: Number, required: false },
+            salePercent: { type: Number, required: false },
             quantity: { type: Number, required: false, default: 100 },
             specifications: { type: JSON, required: true },
             category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true },
-            brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brands', required: false },
+            brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brands', required: true },
         },
         { timestamps: true }
     )
@@ -26,6 +26,13 @@ module.exports = mongoose => {
             let matchCategory = await Categories.getOneByParams({ type: params.type });
             let query = {
                 category: matchCategory._id
+            }
+            params = {...params,...query }
+        }
+        if (params.brands) {
+            let brands = _.isString(params.brands) ? JSON.parse(params.brands) : params.brands;
+            let query = {
+                brand: brands
             }
             params = {...params,...query }
         }

@@ -21,8 +21,13 @@ async function getOne(req, res) {
 async function create(req, res) {
     let rules = {
         title: ['required'],
+        images: ['required'],
         costPrice: ['required'],
-        salePrice: ['required']
+        salePrice: ['required'],
+        salePercent: ['required'],
+        specifications: ['required'],
+        category: ['required'],
+        brand: ['required'],
     }
 
     let validate = await Validate(req.body, rules);
@@ -53,10 +58,10 @@ async function update(req, res) {
     //     return error(req, res, validate);
     // }
 
-    const product = await Products.getOneByParams({ title: req.body.title });
-    if (product) {
-        return error(req, res, "Loại sản phẩm đã tồn tại");
-    }
+    // const product = await Products.getOneByParams({ title: req.body.title });
+    // if (product) {
+    //     return error(req, res, "Loại sản phẩm đã tồn tại");
+    // }
     const result = await Products.updateData(req.params.id, req.body);
     return success(req, res, result);
 }

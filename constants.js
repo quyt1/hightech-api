@@ -26,7 +26,23 @@ const CustomLabelsPagination = {
     meta: 'pagination',
 };
 
+const userType = {
+    SuperAdmin: 'superadmin',
+    Admin: 'admin',
+    CUSTOMER: 'customer'
+}
+
+const orderStatus = {
+    NotProcessed: 'Not Processed',
+    Processing: 'Processing',
+    Shipping: 'Shipping',
+    Completed: 'Completed',
+    Cancelled: 'Cancelled'
+}
+
 module.exports ={
     CATEGORY_TYPE: categoryType,
     CUSTOM_LABELS_PAGINATION: CustomLabelsPagination,
+    USER_TYPE: userType,
+    ORDER_STATUS: orderStatus
 }

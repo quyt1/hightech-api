@@ -1,5 +1,7 @@
 const _ = require('lodash');
 const GetErrorsMessagesValidate = require('../helper/get-errors-messages-validate');
+const BuildQuery = require('../helper/build-query-nosql');
+const Constants = require('../constants');
 
 module.exports = mongoose => {
     const schema = mongoose.Schema(
@@ -7,8 +9,14 @@ module.exports = mongoose => {
             email: { type: String, required: true },
             fullname: { type: String, required: true },
             phone: { type: String, required: true },
+            password: { type: String },
+            role: {
+                type: String,
+                enum: ['customer', 'admin', 'superadmin'],
+                default: 'customer'
+            },
+            avatar: { type: String, required: false },
             address: { type: String, required: false },
-            password: { type: String }
         },
         { timestamps: true }
     )
@@ -51,6 +59,25 @@ module.exports = mongoose => {
         });
     };
 
+    Users.getAll = async (params) => {
+        const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(params);
+        if (hasPaging) {
+            return Users.paginate(filter, {
+                offset: skip,
+                limit: limit,
+                select: projection,
+                sort: sort,
+                populate: population,
+                customLabels: Constants.CUSTOM_LABELS_PAGINATION,
+            })
+        } else {
+            return Users.find(filter)
+                .sort(sort)
+                .select(projection)
+                .populate(population).lean();
+        }
+    }
+
     Users.createData = async (params) => {
         let validate = await Users.validateData(params);
 
@@ -64,7 +91,22 @@ module.exports = mongoose => {
     Users.getOneByParams = async (params) => {
         return await Users.findOne(params);
     }
-    
+
+    Users.getByID = async (params) => {
+        return await Users.findById(params);
+    }
+
+    Users.updateData = async (id, params) => {
+        return await Users.findByIdAndUpdate(id, params).then((data) => {
+            return Users.findById(id);
+        });
+    }
+
+    Users.deleteOne = async (id) => {
+        return await Users.findByIdAndDelete(id);
+    }
+
+
 
     return Users;
 }

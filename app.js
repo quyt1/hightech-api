@@ -5,9 +5,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 const session = require('express-session');
-
 const mongoose = require('mongoose');
 
 
@@ -17,6 +15,8 @@ var brandRouter = require('./modules/brand-management/routes');
 var categoryRouter = require('./modules/category-management/routes');
 var productRouter = require('./modules/product-management/routes');
 var cartRouter = require('./modules/cart-management/routes');
+var orderRouter = require('./modules/order-management/routes');
+var favoriteRouter = require('./modules/favorite-management/routes');
 
 var app = express();
 
@@ -43,6 +43,8 @@ app.use('/brand', brandRouter);
 app.use('/category', categoryRouter);
 app.use('/product', productRouter);
 app.use('/cart', cartRouter);
+app.use('/order', orderRouter);
+app.use('/favorite', favoriteRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -60,9 +62,9 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000, () => {
-  console.log(`Server RESFUL is running on port 3000.`);
-});
+// app.listen(3001, () => {
+//   console.log(`Server RESFUL is running on port 3000.`);
+// });
 
 module.exports = app;
 
