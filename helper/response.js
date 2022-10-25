@@ -4,7 +4,7 @@ module.exports = {
 }
 function success(req, res, data,message = 'success') {
     const response = {
-      name: 'RestAPI v1',
+      name: 'HighTech API v1',
       code: 200,
       error : false,
       message: message,
@@ -15,10 +15,10 @@ function success(req, res, data,message = 'success') {
 
 function error(req,res,message,code = 422){
     const response = {
-        name: 'RestAPI v1',
+        name: 'HighTech API v1',
         code: code,
         error: true,
-        errorMessage: message,
+        message: message,
         data: null,
       }
       res.status(code).send(response)

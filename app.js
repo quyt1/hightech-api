@@ -18,6 +18,7 @@ var cartRouter = require('./modules/cart-management/routes');
 var orderRouter = require('./modules/order-management/routes');
 var favoriteRouter = require('./modules/favorite-management/routes');
 var bannerRouter = require('./modules/banner-management/routes');
+var adminRouter = require('./modules/admin-management/routes');
 
 var app = express();
 
@@ -47,6 +48,38 @@ app.use('/cart', cartRouter);
 app.use('/order', orderRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/banner', bannerRouter);
+app.use('/admin', adminRouter);
+
+
+/*
+* Swagger
+*/
+const swaggerJSDoc = require('swagger-jsdoc');
+let schemes = ["http", "https"];
+const options = {
+  definition: {
+    info: {
+      title: 'HighTech REST API Documentation', // Title (required)
+      description: `This is REST API Documentation for HighTech.`,
+      version: '1.0.0', // Version (required),
+    },
+    schemes: schemes,
+  },
+  // Path to the API docs
+  apis: ['./swagger_api_docs/**/*.yaml'],
+};
+
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+const swaggerDocument = swaggerJSDoc(options);
+const swaggerUi = require('swagger-ui-express');
+const swaggerOptions = {
+  customSiteTitle: 'HighTech REST API Documentation',
+};
+app.use('/docs', swaggerUi.serve, (...args) => swaggerUi.setup(swaggerDocument, swaggerOptions)(...args));
+/*
+* Swagger
+*/
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
