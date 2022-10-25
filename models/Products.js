@@ -1,5 +1,6 @@
 const BuildQuery = require('../helper/build-query-nosql');
 const Constants = require('../constants');
+let _ = require('lodash');
 
 module.exports = mongoose => {
     const schema = mongoose.Schema(
@@ -30,9 +31,9 @@ module.exports = mongoose => {
             params = {...params,...query }
         }
         if (params.brands) {
-            let brands = _.isString(params.brands) ? JSON.parse(params.brands) : params.brands;
+            // let brands = _.isString(params.brands) ? JSON.parse(params.brands) : params.brands;
             let query = {
-                brand: brands
+                brand: params.brands
             }
             params = {...params,...query }
         }

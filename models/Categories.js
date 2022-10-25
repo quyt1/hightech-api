@@ -7,7 +7,7 @@ module.exports = mongoose => {
         {
             title: { type: String, required: true },
             icon : { type: String, required: true },
-            type: { type: Number, required: true }
+            type: { type: Number, required: true },
         },
         { timestamps: true }
     )

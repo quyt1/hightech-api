@@ -19,22 +19,24 @@ async function getOne(req, res) {
 }
 
 async function create(req, res) {
-    let rules = {
-        image: ['required']
+    let { body, file } = req;
+    if (file) {
+        delete body.image;
+        let image = `http://localhost:3000/img/${file.filename}`
+        body = { ...body, image: image }
+    } else {
+        let rules = {
+            image: ['required']
+        }
+
+        let validate = await Validate(req.body, rules);
+
+        if (validate) {
+            return error(req, res, validate);
+        }
     }
 
-    let validate = await Validate(req.body, rules);
-
-    if (validate) {
-        return error(req, res, validate);
-    }
-
-    // if(req.file){
-    //     let image = `http://localhost:3000/img/${file.filename}`
-    //     body = {...body,image : image}
-    // }
-
-    const result = await Banners.createData(req.body);
+    const result = await Banners.createData(body);
     return success(req, res, result);
 }
 

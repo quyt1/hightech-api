@@ -19,15 +19,21 @@ async function getOne(req, res) {
 }
 
 async function create(req, res) {
+    let { body, files } = req;
     let rules = {
         title: ['required'],
-        images: ['required'],
         costPrice: ['required'],
         salePrice: ['required'],
         salePercent: ['required'],
         specifications: ['required'],
         category: ['required'],
         brand: ['required'],
+    }
+    if (!files) {
+        rules.images = ['required']
+    }else{
+        let images = files.map(file => `http://localhost:3000/img/${file.filename}`)
+        body.images = {...body.images, ...images}           
     }
 
     let validate = await Validate(req.body, rules);
@@ -36,13 +42,13 @@ async function create(req, res) {
         return error(req, res, validate);
     }
 
-    const product = await Products.getOneByParams({ title: req.body.title });
-    if (product) {
-        return error(req, res, "Loại sản phẩm đã tồn tại");
-    }
+    // const product = await Products.getOneByParams({ title: req.body.title });
+    // if (product) {
+    //     return error(req, res, "Loại sản phẩm đã tồn tại");
+    // }
     const result = await Products.createData(req.body);
     return success(req, res, result);
-    
+
 }
 
 async function update(req, res) {
