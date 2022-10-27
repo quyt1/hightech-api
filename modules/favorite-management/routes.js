@@ -5,8 +5,8 @@ const { Auth } = require('../../middle/AuthMiddleware')
 
 router.use(Auth);
 router.get('/',controller.getAll);
+router.post('/', controller.favorite);
 router.get('/me',controller.getFavorites);
 router.get('/check/:id', controller.checkFavorite);
-router.post('/', controller.favorite);
 
 module.exports = router

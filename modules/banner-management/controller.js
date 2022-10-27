@@ -22,7 +22,7 @@ async function create(req, res) {
     let { body, file } = req;
     if (file) {
         delete body.image;
-        let image = `http://localhost:3000/img/${file.filename}`
+        let image = `/images/${file.filename}`
         body = { ...body, image: image }
     } else {
         let rules = {

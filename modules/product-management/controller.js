@@ -32,7 +32,7 @@ async function create(req, res) {
     if (!files) {
         rules.images = ['required']
     }else{
-        let images = files.map(file => `http://localhost:3000/img/${file.filename}`)
+        let images = files.map(file => `/images/${file.filename}`)
         body.images = {...body.images, ...images}           
     }
 

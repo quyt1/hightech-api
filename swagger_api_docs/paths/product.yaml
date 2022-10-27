@@ -21,5 +21,118 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+    post:
+      tags:
+        - Product
+      summary: Create new product.
+      parameters:
+        - name: body
+          in: body
+          description: 
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+        - name: files
+          in: formData
+          description: 
+          required: true
+          type: file
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
+  /product/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get product by id.
+      parameters:
+        - name: id
+          in: path
+          description: 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
+    put:
+      tags:
+        - Product
+      summary: Update product by id.
+      parameters:
+      - name: id
+        in: path
+        description: 
+        required: true
+        type: integer
+      - name: body
+        in: body
+        description: 
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
+    delete:
+      tags:
+        - Product
+      summary: Delete product by id.
+      parameters:
+        - name: id
+          in: path
+          description: 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
       security:
         - x-access-token: []
