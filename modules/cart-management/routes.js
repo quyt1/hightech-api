@@ -3,10 +3,11 @@ const express = require('express');
 const { Auth } = require('../../middle/AuthMiddleware')
 var router = express.Router();
 
-router.get('/',Auth,controller.getCart);
-router.post('/',Auth, controller.addOneProductToCart);
-router.put('/',Auth, controller.updateProductQuantity);
-router.post('/add-products',Auth, controller.addProductsToCart);
+router.use(Auth)
+router.get('/',controller.getCart);
+router.post('/', controller.addOneProductToCart);
+router.put('/', controller.updateProductQuantity);
+router.post('/add-products', controller.addProductsToCart);
 
 
 module.exports = router
