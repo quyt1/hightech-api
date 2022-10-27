@@ -21,5 +21,91 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+    post:
+      tags:
+        - Cart
+      summary: Add product to cart.
+      parameters:
+        - name: productId
+          in: formData
+          description: 
+          required: true
+          type: string
+        - name: quantity
+          in: formData
+          description: 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
+    put:
+      tags:
+        - Cart
+      summary: Update product quantity in cart.
+      parameters:
+        - name: productId
+          in: formData
+          description: 
+          required: true
+          type: string
+        - name: quantity
+          in: formData
+          description: 
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
+  /cart/add-products:
+    post:
+      tags:
+        - Cart
+      summary: Add products to cart.
+      parameters:
+        - name: productIds
+          in: formData
+          description: 
+          required: true
+          type: string
+      responses:
+        200:
+          description: Responses Successful
+          schema:
+            $ref: '#/definitions/ResponseSuccess'
+        422:
+          description: Responses Validate Data
+          schema:
+            $ref: '#/definitions/ResponseError'
+        404:
+          description: Responses Data Not Found
+          schema:
+            $ref: '#/definitions/ResponseError'
+        500:
+          description: Server error
       security:
         - x-access-token: []

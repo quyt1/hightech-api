@@ -5,8 +5,8 @@ var router = express.Router();
 
 router.get('/',Auth,controller.getCart);
 router.post('/',Auth, controller.addOneProductToCart);
-router.post('/add-products',Auth, controller.addProductsToCart);
 router.put('/',Auth, controller.updateProductQuantity);
+router.post('/add-products',Auth, controller.addProductsToCart);
 
 
 module.exports = router
