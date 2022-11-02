@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const { success, error } = require('./helper/response')
 
 
 //routes
@@ -23,8 +24,8 @@ var adminRouter = require('./modules/admin-management/routes');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -93,8 +94,9 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // res.status(err.status || 500);
+  // res.render('error');
+  error(req, res, err.message, err.status || 500)
 });
 
 // app.listen(3001, () => {
