@@ -10,14 +10,14 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const { success, error } = require('./helper/response')
 
-console.log(process.env.FLAVOR);
-
 //
-const Sentry = require("@sentry/node");
-Sentry.init({
-  dsn: "https://efb84a1e47824f18a3952647475381a9@o4504115507560448.ingest.sentry.io/4504115510378496",
-  tracesSampleRate: 1.0,
-});
+if (process.env.FLAVOR != 'dev') {
+  const Sentry = require("@sentry/node");
+  Sentry.init({
+    dsn: "https://efb84a1e47824f18a3952647475381a9@o4504115507560448.ingest.sentry.io/4504115510378496",
+    tracesSampleRate: 1.0,
+  });
+}
 //
 
 

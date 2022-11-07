@@ -1,14 +1,14 @@
 const controller = require('./controller');
 const express = require('express');
 var router = express.Router();
-const { Auth ,isSuperAdmin} = require('../../middle/AuthMiddleware')
+const ErrorHandler = require('../../middle/error-handler');
+const { Auth, isSuperAdmin } = require('../../middle/AuthMiddleware')
 
-router.post('/login',controller.login);
-router.post('/register',controller.register);
-router.get('/logout',controller.logout);
-router.get('/me',Auth,controller.getProlile);
-router.put('/change-password',Auth,controller.changePassword);
-
+router.post('/login', ErrorHandler(controller.login));
+router.post('/register', ErrorHandler(controller.register));
+router.post('/logout', ErrorHandler(controller.logout));
+router.get('/me', Auth, ErrorHandler(controller.getProlile));
+router.put('/change-password', Auth, ErrorHandler(controller.changePassword));
 
 
 

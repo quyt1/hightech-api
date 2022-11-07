@@ -6,6 +6,16 @@ const jwt = require('jsonwebtoken')
 
 
 async function getAll(req, res) {
+    let rules = {
+        type: ['numeric'],
+    }
+
+    let validate = await Validate(req.query, rules);
+
+    if (validate) {
+        return error(req, res, validate);
+    }
+
     let products = await Products.getAll(req.query);
     return success(req, res, products);
 }

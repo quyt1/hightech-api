@@ -68,7 +68,7 @@ async function register(req, res) {
 }
 
 async function logout(req, res) {
-
+    return success(req, res, "Đăng xuất thành công");
 }
 
 async function getProlile(req, res) {
