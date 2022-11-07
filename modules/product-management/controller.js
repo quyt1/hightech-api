@@ -1,5 +1,5 @@
 const { success, error } = require('../../helper/response')
-const { Products } = require('../../models')
+const { Products, Favorites } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
@@ -22,6 +22,8 @@ async function getAll(req, res) {
 
 async function getOne(req, res) {
     let product = await Products.getByID(req.params.id);
+    let favorite = await Favorites.getOneByParams({ user: req.user.id, product: req.params.id }) ? true : false;
+    product.favorite = favorite
     if (!product) {
         return error(req, res, "Không tìm thấy loại sản phẩm");
     }
@@ -41,9 +43,9 @@ async function create(req, res) {
     }
     if (!files) {
         rules.images = ['required']
-    }else{
+    } else {
         let images = files.map(file => `/images/${file.filename}`)
-        body.images = {...body.images, ...images}           
+        body.images = { ...body.images, ...images }
     }
 
     let validate = await Validate(req.body, rules);

@@ -7,7 +7,7 @@ const ErrorHandler = require('../../middle/error-handler');
 router.use(Auth);
 router.get('/', ErrorHandler(controller.getAll));
 router.post('/', ErrorHandler(controller.favorite));
-router.get('/me', ErrorHandler(controller.getFavorites));
+router.get('/me', ErrorHandler(controller.getMyFavorites));
 router.get('/check/:id', ErrorHandler(controller.checkFavorite));
 
 module.exports = router

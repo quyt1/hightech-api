@@ -61,7 +61,7 @@ module.exports = mongoose => {
     }
 
     Products.getByID = async (params) => {
-        return await Products.findById(params);
+        return await Products.findById(params).lean();
     }
 
     Products.getOneByParams = async (params) => {

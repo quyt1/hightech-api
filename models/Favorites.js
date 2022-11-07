@@ -54,6 +54,36 @@ module.exports = mongoose => {
         }
     }
 
+    Favorites.getMyFavoriteProducts = async (req) => {
+        let query = {
+            user: req.user.id,
+        }
+        req.query = {...req.query,...query }
+        if (!req.query.populate) {
+            req.query.populate = 'product';
+        }
+        const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(req.query);
+        if (hasPaging) {
+            return Favorites.paginate(filter, {
+                offset: skip,
+                limit: limit,
+                select: projection,
+                sort: sort,
+                populate: population,
+                customLabels: Constants.CUSTOM_LABELS_PAGINATION,
+            }).then(favorites => {
+                return favorites.map(favorite => favorite.product);
+            })
+        } else {
+            return Favorites.find(filter)
+                .sort(sort)
+                .select(projection)
+                .populate(population).lean().then(favorites => {
+                    return favorites.map(favorite => favorite.product);
+                })
+        }
+    }
+
 
 
     Favorites.createData = async (params) => {

@@ -8,8 +8,8 @@ async function getAll(req, res) {
     return success(req, res, favorites);
 }
 
-async function getFavorites(req, res) {
-    let favorites = await Favorites.getByUser(req);
+async function getMyFavorites(req, res) {
+    let favorites = await Favorites.getMyFavoriteProducts(req);
     return success(req, res, favorites);
 }
 
@@ -41,7 +41,7 @@ async function favorite(req, res) {
             product: req.body.productId,
             user: req.user.id
         });
-        return success(req, res, newFavorite);
+        return success(req, res, {});
     }else {
         let favorite = await Favorites.getOneByParams({ product: req.body.productId, user: req.user.id });
         if (!favorite) {
@@ -56,7 +56,7 @@ async function favorite(req, res) {
 
 module.exports = {
     getAll,
-    getFavorites,
+    getMyFavorites,
     checkFavorite,
     favorite
 }

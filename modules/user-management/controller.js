@@ -76,6 +76,11 @@ async function getProlile(req, res) {
     return success(req, res, user);
 }
 
+async function updateProfile(req, res) {
+    const result = await Users.updateData(req.user.id, req.body);
+    return success(req, res, result);
+}
+
 async function changePassword(req, res) {
     let rules = {
         oldPassword: ['required', 'min:6'],
@@ -108,5 +113,6 @@ module.exports = {
     register,
     logout,
     getProlile,
-    changePassword
+    changePassword,
+    updateProfile
 }
