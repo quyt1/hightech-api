@@ -15,8 +15,22 @@ async function getAll(req, res) {
     if (validate) {
         return error(req, res, validate);
     }
-
     let products = await Products.getAll(req.query);
+    let favorites = await Favorites.getAll({ user: req.user.id })
+    if (products.data) {
+        products.data = await products.data.map(product => {
+            product = product.toObject()
+            let favorite = favorites.find(favorite => favorite.product.equals(product._id))
+            product.favorite = favorite ? true : false
+            return product;
+        })
+    }else{
+        products = await products.map(product => {
+            let favorite = favorites.find(favorite => favorite.product.equals(product._id))
+            product.favorite = favorite ? true : false
+            return product;
+        })
+    }
     return success(req, res, products);
 }
 
