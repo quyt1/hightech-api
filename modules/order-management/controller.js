@@ -47,15 +47,14 @@ async function createOrder(req, res) {
         return error(req, res, validate);
     }
     req.body.user = req.user.id;
-    // let totalPrice = 0;
-    // for (let i = 0; i < req.body.items.length; i++) {
-    //     let product = await Products.getByID(req.body.items[i].product);
-    //     if (!product) {
-    //         return error(req, res, "Sản phẩm không tồn tại");
-    //     }
-    //     totalPrice += product.salePrice * req.body.items[i].quantity;
-    // }
-    // req.body.totalPrice = totalPrice;
+    for (let i = 0; i < req.body.items.length; i++) {
+        let product = await Products.getByID(req.body.items[i].product);
+        if (product.quantity < req.body.items[i].quantity) {
+            return error(req, res, "Sản phẩm " + product.name + " không đủ số lượng");
+        }else{
+            await Products.updateData(product.id,{quantity: product.quantity - req.body.items[i].quantity});
+        }
+    }
 
     const result = await Orders.createData(req.body);
     return success(req, res, result);

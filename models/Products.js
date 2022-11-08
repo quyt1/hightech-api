@@ -28,14 +28,14 @@ module.exports = mongoose => {
             let query = {
                 category: matchCategory._id
             }
-            params = {...params,...query }
+            params = { ...params, ...query }
         }
         if (params.brands) {
             // let brands = _.isString(params.brands) ? JSON.parse(params.brands) : params.brands;
             let query = {
                 brand: params.brands
             }
-            params = {...params,...query }
+            params = { ...params, ...query }
         }
         const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(params);
         if (hasPaging) {
@@ -61,7 +61,11 @@ module.exports = mongoose => {
     }
 
     Products.getByID = async (params) => {
-        return await Products.findById(params);
+        const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(params);
+        return await Products.findOne(filter)
+            .sort(sort)
+            .select(projection)
+            .populate(population)
     }
 
     Products.getOneByParams = async (params) => {

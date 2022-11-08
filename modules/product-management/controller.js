@@ -11,7 +11,8 @@ async function getAll(req, res) {
 }
 
 async function getOne(req, res) {
-    let product = await Products.getByID(req.params.id);
+    req.params = { ...req.params, ...req.query }
+    let product = await Products.getByID(req.params);
     if (!product) {
         return error(req, res, "Không tìm thấy loại sản phẩm");
     }
