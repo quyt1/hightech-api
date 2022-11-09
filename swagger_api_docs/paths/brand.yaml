@@ -21,6 +21,8 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+      security:
+        - x-access-token: []
     post:
       tags:
         - Brand
@@ -50,7 +52,9 @@ paths:
           schema:
             $ref: '#/definitions/ResponseError'
         500:
-          description: Server error
+          description: Server 
+      security:
+        - x-access-token: []
   /brand/{id}:
     get:    
       tags:
@@ -77,6 +81,8 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+      security:
+        - x-access-token: []
     put:
       tags:
         - Brand
@@ -108,6 +114,8 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+      security:
+        - x-access-token: []
     delete:
       tags:
         - Brand

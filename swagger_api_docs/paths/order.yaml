@@ -21,6 +21,8 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+      security:
+        - x-access-token: []
     post:
       tags:
         - Order
@@ -48,6 +50,8 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+      security:
+        - x-access-token: []
   /order/{id}:
     get:
       tags:
@@ -73,7 +77,9 @@ paths:
           schema:
             $ref: '#/definitions/ResponseError'
         500:
-          description: Server error
+          description: Server 
+      security:
+        - x-access-token: []
     put:
       tags:
         - Order
@@ -106,6 +112,8 @@ paths:
             $ref: '#/definitions/ResponseError'
         500:
           description: Server error
+      security:
+        - x-access-token: []
   /order/me:
     get:
       tags:

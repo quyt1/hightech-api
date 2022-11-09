@@ -9,6 +9,7 @@ router.get('/', ErrorHandler(controller.getCart));
 router.post('/', ErrorHandler(controller.addOneProductToCart));
 router.put('/', ErrorHandler(controller.updateProductQuantity));
 router.post('/add-products', ErrorHandler(controller.addProductsToCart));
+router.delete('/remove-products', ErrorHandler(controller.removeProductsFromCart));
 
 
 module.exports = router

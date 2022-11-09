@@ -91,7 +91,7 @@ async function addProductsToCart(req, res) {
         }
     })
     await cart.save();
-    return success(req, res, cart);
+    return success(req, res, cart.items);
 }
 
 async function updateProductQuantity(req, res) {
@@ -123,10 +123,33 @@ async function updateProductQuantity(req, res) {
     return success(req, res, cartItem);
 }
 
+async function removeProductsFromCart(req, res) {
+    let rules = {
+        productIds: ['required']
+    }
+
+    let validate = await Validate(req.body, rules);
+
+    if (validate) {
+        return error(req, res, validate);
+    }
+    let productIds = _.isString(req.body.productIds) ? JSON.parse(req.body.productIds) : req.body.productIds;
+    let cart = await Carts.getOneByParams({ user: req.user.id });
+    if (!cart) {
+        return error(req, res, "Giỏ hàng trống");
+    }
+    productIds.forEach(productId => {
+        cart.items = cart.items.filter(item => item.product._id != productId);
+    })
+    await cart.save();
+    return success(req, res, cart.items);
+}
+
 
 module.exports = {
     getCart,
     addOneProductToCart,
     addProductsToCart,
-    updateProductQuantity
+    updateProductQuantity,
+    removeProductsFromCart
 }
