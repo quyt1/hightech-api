@@ -35,8 +35,8 @@ async function getAll(req, res) {
 }
 
 async function getOne(req, res) {
-    req.params = { ...req.params, ...req.query }
-    let product = await Products.getByID(req.params);
+    // req.params = { ...req.params, ...req.query }
+    let product = await Products.getByID(req.params.id);
     let favorite = await Favorites.getOneByParams({ user: req.user.id, product: req.params.id }) ? true : false;
     product.favorite = favorite
     if (!product) {
