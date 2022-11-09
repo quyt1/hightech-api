@@ -108,6 +108,8 @@ paths:
           description: AccessToken Error
           schema:
             $ref: '#/definitions/ResponseError'
+      security:
+        - x-access-token: []
   /access/me:
     get:
       tags:
