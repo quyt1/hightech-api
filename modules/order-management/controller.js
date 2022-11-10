@@ -1,5 +1,5 @@
 const { success, error } = require('../../helper/response')
-const { Orders,Products } = require('../../models')
+const { Orders, Products,Carts } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
@@ -34,10 +34,10 @@ async function createOrder(req, res) {
         totalPrice: ['required'],
         paymentMethod: ['required'],
         shippingAddress: ['required'],
-        'shippingAddress.address' : ['required'],
-        'shippingAddress.city' : ['required'],
-        'shippingAddress.postalCode' : ['required'],
-        'shippingAddress.country' : ['required'],
+        'shippingAddress.address': ['required'],
+        'shippingAddress.city': ['required'],
+        'shippingAddress.postalCode': ['required'],
+        'shippingAddress.country': ['required'],
         phone: ['required'],
     }
 
@@ -51,14 +51,26 @@ async function createOrder(req, res) {
         let product = await Products.getByID(req.body.items[i].product);
         if (product.quantity < req.body.items[i].quantity) {
             return error(req, res, "Sản phẩm " + product.name + " không đủ số lượng");
-        }else{
-            await Products.updateData(product.id,{quantity: product.quantity - req.body.items[i].quantity});
+        } else {
+            await Products.updateData(product.id, { quantity: product.quantity - req.body.items[i].quantity });
         }
     }
 
     const result = await Orders.createData(req.body);
+    //Remove product in cart when this product is ordered
+    let cart = await Carts.getOneByParams({ user: req.user.id });
+    if (cart) {
+        for (let i = 0; i < req.body.items.length; i++) {
+            let cartItem = cart.items.find(item => item.product._id == req.body.items[i].product);
+            if (cartItem) {
+                cart.items = cart.items.filter(item => item.product._id != req.body.items[i].product);
+            }
+        }
+        await cart.save();
+    }
+
     return success(req, res, result);
-    
+
 }
 
 async function updateOrder(req, res) {
@@ -76,9 +88,9 @@ async function updateOrder(req, res) {
     if (!order) {
         return error(req, res, "Đơn hàng không tồn tại");
     }
-    const result = await Orders.updateData(req.params.id,req.body);
+    const result = await Orders.updateData(req.params.id, req.body);
     return success(req, res, result);
-    
+
 }
 
 
