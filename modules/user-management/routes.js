@@ -10,6 +10,9 @@ router.post('/logout', ErrorHandler(controller.logout));
 router.get('/me', Auth, ErrorHandler(controller.getProlile));
 router.put('/me', Auth, ErrorHandler(controller.updateProfile));
 router.put('/change-password', Auth, ErrorHandler(controller.changePassword));
+router.post('/forgot-password', ErrorHandler(controller.forgotPassword));
+router.post('/verify-code', ErrorHandler(controller.verifyCode));
+router.post('/reset-password', ErrorHandler(controller.resetPassword));
 
 
 
