@@ -67,7 +67,7 @@ app.use('/admin', adminRouter);
 * Swagger
 */
 const swaggerJSDoc = require('swagger-jsdoc');
-let schemes = ["http", "https"];
+let schemes = ["https", "http"];
 const options = {
   definition: {
     info: {
