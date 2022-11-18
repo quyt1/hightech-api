@@ -152,7 +152,6 @@ function sendEmailForgotPassword(user, code) {
      let   emailTemplatePath = './../../views/password-reset.html';
   
     //grab email template
-    console.log(user);
     let template = fs.readFileSync(path.join(__dirname, emailTemplatePath), 'utf8');
     template = template.replace('{{ firstName }}', user.fullname);
     template = template.replace('{{ verifyCode }}', code);
@@ -160,7 +159,7 @@ function sendEmailForgotPassword(user, code) {
     //set params for email
     let params = {};
     params.to = [user.email];
-    params.subject = i18next.t('{{appName}} - Forgot Password', {appName: 'HighTech'});
+    params.subject = 'HighTech - Reset Password';
     params.htmlContent = template;
 
     //send to AWS SES

@@ -22,7 +22,6 @@
        pass: adminPassword
      }
    })
-   console.log(params.to);
    const options = {
      from: adminEmail, // địa chỉ admin email bạn dùng để gửi
      to: params.to, // địa chỉ gửi đến

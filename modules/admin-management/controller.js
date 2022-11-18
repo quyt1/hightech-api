@@ -39,6 +39,8 @@ async function createAdmin(req, res) {
     }
     const hash = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10));
     req.body.password =  hash;
+    req.body.role = 'admin';
+    req.body.avatar = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'
     const result = await Users.createData(req.body);
     return success(req, res, result);
 }
