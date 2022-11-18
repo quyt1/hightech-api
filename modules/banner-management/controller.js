@@ -22,7 +22,7 @@ async function create(req, res) {
     let { body, file } = req;
     if (file) {
         delete body.image;
-        let image = `/images/${file.filename}`
+        let image = `https://fpt-hightech-api.herokuapp.com/images/${file.filename}`
         body = { ...body, image: image }
     } else {
         let rules = {

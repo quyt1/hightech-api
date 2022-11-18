@@ -59,7 +59,7 @@ async function create(req, res) {
     if (!files) {
         rules.images = ['required']
     } else {
-        let images = files.map(file => `/images/${file.filename}`)
+        let images = files.map(file => `https://fpt-hightech-api.herokuapp.com/images/${file.filename}`)
         body.images = { ...body.images, ...images }
     }
 

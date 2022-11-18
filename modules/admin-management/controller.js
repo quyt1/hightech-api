@@ -32,6 +32,14 @@ async function createAdmin(req, res) {
     if(validate){
         return error(req, res, validate);
     }
+    let {file} = req
+    if (file) {
+        console.log(file.filename);
+        let image = `https://fpt-hightech-api.herokuapp.com/images/${file.filename}`
+        req.body.avatar = image
+    } else {
+        req.body.avatar = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'
+    }
 
     const user = await Users.getOneByParams({ email: req.body.email });
     if (user) {
@@ -40,28 +48,18 @@ async function createAdmin(req, res) {
     const hash = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10));
     req.body.password =  hash;
     req.body.role = 'admin';
-    req.body.avatar = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'
     const result = await Users.createData(req.body);
     return success(req, res, result);
 }
 
 async function updateAdmin(req, res) {
-    // let rules = {
-    //     email: ['required'],
-    //     fullname: ['required'],
-    //     phone: ['required']
-    // }
-
-    // let validate = await Validate(req.body, rules);
-
-    // if(validate){
-    //     return error(req, res, validate);
-    // }
-
-    // const user = await Users.getOneByParams({ email: req.body.email });
-    // if (user && user._id != req.params.id) {
-    //     return error(req, res, "Email đã tồn tại");
-    // }
+    let {file} = req
+    if (file) {
+        console.log(file.filename);
+        let image = `https://fpt-hightech-api.herokuapp.com/images/${file.filename}`
+        req.body.avatar = image
+    }
+    
     delete req.body.email
     delete req.body.password
     const result = await Users.updateData(req.params.id, req.body);
