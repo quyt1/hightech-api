@@ -62,8 +62,10 @@ async function updateAdmin(req, res) {
     
     delete req.body.email
     // delete req.body.password
-    const hash = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10));
-    req.body.password =  hash;
+    if(req.body.password){
+        const hash = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10));
+        req.body.password =  hash;
+    }
     const result = await Users.updateData(req.params.id, req.body);
     return success(req, res, result);
 }
