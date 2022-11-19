@@ -60,7 +60,7 @@ async function updateAdmin(req, res) {
         req.body.avatar = image
     }
     
-    delete req.body.email
+    // delete req.body.email
     // delete req.body.password
     if(req.body.password){
         const hash = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10));
