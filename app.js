@@ -32,6 +32,7 @@ var orderRouter = require('./modules/order-management/routes');
 var favoriteRouter = require('./modules/favorite-management/routes');
 var bannerRouter = require('./modules/banner-management/routes');
 var adminRouter = require('./modules/admin-management/routes');
+var notificationRouter = require('./modules/notification-management/routes');
 
 var app = express();
 
@@ -62,6 +63,7 @@ app.use('/order', orderRouter);
 app.use('/favorite', favoriteRouter);
 app.use('/banner', bannerRouter);
 app.use('/admin', adminRouter);
+app.use('/notification', notificationRouter);
 
 
 /*

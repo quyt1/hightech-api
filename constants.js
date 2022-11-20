@@ -40,9 +40,18 @@ const orderStatus = {
     Cancelled: 'Cancelled'
 }
 
+const ServiceAccount = require('./config/firebaseServiceKey.json');
+const FirebaseConfig = {
+    PROJECT_ID: ServiceAccount.project_id,
+    SERVICE_ACCOUNT_ID: process.env.FIREBASE_SERVICE_ACCOUNT_ID,
+    DATABASE_URL: `https://${ServiceAccount.project_id}.firebaseio.com`
+}
+
 module.exports ={
     CATEGORY_TYPE: categoryType,
     CUSTOM_LABELS_PAGINATION: CustomLabelsPagination,
     USER_TYPE: userType,
-    ORDER_STATUS: orderStatus
+    ORDER_STATUS: orderStatus,
+    SERVICE_ACCOUNT: ServiceAccount,
+    FIREBASE_CONFIG: FirebaseConfig
 }
