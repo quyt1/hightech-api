@@ -1,12 +1,11 @@
 const { success, error } = require('../../helper/response')
-const { Orders, Products,Carts } = require('../../models')
+const { Orders, Products, Carts, UserNotifications,AppDevices } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 let _ = require('lodash');
 const Constants = require('../../constants');
-
-
+const PushNotification = require('../../helper/push-notification');
 
 async function getOrders(req, res) {
     let orders = await Orders.getAll(req.query);
@@ -89,8 +88,35 @@ async function updateOrder(req, res) {
         return error(req, res, "Đơn hàng không tồn tại");
     }
     const result = await Orders.updateData(req.params.id, req.body);
+    //
+    let deviceTokens = [];
+    let appDevices = await AppDevices.getAll({user : order.user});
+    if (appDevices) {
+        appDevices.forEach(appDevice => {
+            deviceTokens.push(appDevice.deviceToken);
+        });
+    }
+    let notification = await UserNotifications.createData({
+        user: order.user,
+        title: "Đơn hàng #" + order.id + " đã được cập nhật",
+        description: "Đơn hàng #" + order.id + " đã được cập nhật thành trạng thái " + req.body.status,
+        information: {
+            order: order._id
+        }
+    });
+    if (deviceTokens.length > 0) {
+        await PushNotification.sendPushNotification({
+            notification: {
+                title: notification.title,
+                body: notification.description,
+                data: notification.information
+            },
+            data: notification.information,
+            deviceToken: deviceTokens
+        });
+    }
+    //
     return success(req, res, result);
-
 }
 
 

@@ -1,8 +1,6 @@
 const { success, error } = require('../../helper/response')
 const { Banners } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
-var bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
 
 
 async function getAll(req, res) {
