@@ -1,5 +1,5 @@
 
-//imprt module
+//import module
 require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
@@ -10,6 +10,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const { success, error } = require('./helper/response')
 const cors = require("cors");
+const bodyParser = require('body-parser');
 
 //
 if (process.env.FLAVOR != 'dev') {
@@ -37,9 +38,9 @@ var appDeviceRouter = require('./modules/app-device-management/routes');
 
 var app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'hbs');
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());

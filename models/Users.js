@@ -15,7 +15,12 @@ module.exports = mongoose => {
                 enum: ['customer', 'admin', 'superadmin'],
                 default: 'customer'
             },
-            avatar: { type: String, required: false , default: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png'},
+            gender: {
+                type: Number,
+                enum: [0, 1, 2],
+                default: 0
+            },
+            avatar: { type: String, required: false, default: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png' },
             address: { type: String, required: false },
         },
         { timestamps: true }
