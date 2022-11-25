@@ -36,6 +36,11 @@ async function getAll(req, res) {
     return success(req, res, userNotifications);
 }
 
+async function getByUser(req, res) {
+    let userNotifications = await UserNotifications.getAll({user : req.user.id});
+    return success(req, res, userNotifications);
+}
+
 async function getOne(req, res) {
     let userNotification = await UserNotifications.getByID(req.params.id);
     if (!userNotification) {
@@ -78,6 +83,7 @@ async function deleteOne(req, res) {
 module.exports = {
     pushNotification,
     getAll,
+    getByUser,
     getOne,
     markRead,
     markAllRead,
