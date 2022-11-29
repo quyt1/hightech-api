@@ -108,7 +108,11 @@ module.exports = mongoose => {
     }
 
     Orders.getOneByParams = async (params) => {
-        const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(params);
+        let query = {
+            populate : 'items.product'
+        }
+        query = {...query,...params }
+        const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(query);
         return await Orders.findOne(filter)
             .sort(sort)
             .select(projection)

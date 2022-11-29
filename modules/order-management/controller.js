@@ -18,7 +18,7 @@ async function getMyOrders(req, res) {
 }
 
 async function getOneOrder(req, res) {
-    let order = await Orders.getByID(req.params.id);
+    let order = await Orders.getOneByParams({_id :  req.params.id});
     if (!order) {
         return error(req, res, "Không tìm thấy đơn hàng");
     }
@@ -51,7 +51,7 @@ async function createOrder(req, res) {
         if (product.quantity < req.body.items[i].quantity) {
             return error(req, res, "Sản phẩm " + product.name + " không đủ số lượng");
         } else {
-            await Products.updateData(product.id, { quantity: product.quantity - req.body.items[i].quantity });
+            await Products.updateData(product.id, { quantity: product.quantity - req.body.items[i].quantity, sold: product.sold + req.body.items[i].quantity });
         }
     }
 

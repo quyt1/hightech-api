@@ -12,6 +12,7 @@ module.exports = mongoose => {
             salePrice: { type: Number, required: false },
             salePercent: { type: Number, required: false },
             quantity: { type: Number, required: false, default: 100 },
+            sold : { type: Number, required: false, default: 0 },
             specifications: { type: JSON, required: true },
             category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true },
             brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brands', required: true },

@@ -7,6 +7,7 @@ const ErrorHandler = require('../../middle/error-handler');
 
 
 router.get('/', Auth, ErrorHandler(controller.getAll));
+router.get('/',Auth, ErrorHandler(controller.search));
 router.post('/', isAdmin, [upload.array('files')], ErrorHandler(controller.create));
 router.get('/:id', Auth, ErrorHandler(controller.getOne));
 router.put('/:id', isAdmin, ErrorHandler(controller.update));

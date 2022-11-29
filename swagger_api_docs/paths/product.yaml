@@ -6,6 +6,22 @@ paths:
       tags:
         - Product
       summary: Get all products.
+      parameters:
+        - name: page
+          in: query
+          description: 
+          required: false
+          type: integer
+        - name: limit
+          in: query
+          description: 
+          required: false
+          type: integer 
+        - name: populate
+          in: query
+          description: 
+          required: false
+          type: string     
       responses:
         200:
           description: Responses Successful

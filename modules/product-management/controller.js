@@ -34,6 +34,20 @@ async function getAll(req, res) {
     return success(req, res, products);
 }
 
+async function search(req, res) {
+    let rules = {
+        s: ['required'],
+    }
+
+    let validate = await Validate(req.query, rules);
+
+    if (validate) {
+        return error(req, res, validate);
+    }
+    let products = await Products.search(req.query.s);
+    return success(req, res, products);
+}
+
 async function getOne(req, res) {
     // req.params = { ...req.params, ...req.query }
     let product = await Products.getByID(req.params.id);
@@ -109,5 +123,6 @@ module.exports = {
     getOne,
     create,
     update,
-    deleteOne
+    deleteOne,
+    search
 }
