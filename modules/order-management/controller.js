@@ -7,6 +7,21 @@ let _ = require('lodash');
 const Constants = require('../../constants');
 const PushNotification = require('../../helper/push-notification');
 
+//
+const mqtt = require('mqtt')
+const options = {
+    // Clean session
+    clean: true,
+    connectTimeout: 4000,
+    // Auth
+    clientId: 'HighTech Server',
+    username: 'test',
+    password: '123456',
+}
+const client = mqtt.connect('tcp://smarttech-mqtt-stage.techgel.cloud:1883', options)
+//
+
+
 async function getOrders(req, res) {
     let orders = await Orders.getAll(req.query);
     return success(req, res, orders);
@@ -51,7 +66,10 @@ async function createOrder(req, res) {
         if (product.quantity < req.body.items[i].quantity) {
             return error(req, res, "Sản phẩm " + product.name + " không đủ số lượng");
         } else {
-            await Products.updateData(product.id, { quantity: product.quantity - req.body.items[i].quantity, sold: product.sold + req.body.items[i].quantity });
+            let soldCount = product.sold ? product.sold : 0
+            product.quantity = product.quantity - req.body.items[i].quantity
+            product.sold = soldCount + req.body.items[i].quantity
+            await product.save()
         }
     }
 
@@ -67,7 +85,7 @@ async function createOrder(req, res) {
         }
         await cart.save();
     }
-
+    client.publish('order', JSON.stringify(result))
     return success(req, res, result);
 
 }
