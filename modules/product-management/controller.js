@@ -52,7 +52,7 @@ async function getOne(req, res) {
     // req.params = { ...req.params, ...req.query }
     let product = await Products.getByID(req.params.id);
     let favorite = await Favorites.getOneByParams({ user: req.user.id, product: req.params.id }) ? true : false;
-    product.favorite = favorite
+    product.favorite = true
     if (!product) {
         return error(req, res, "Không tìm thấy loại sản phẩm");
     }

@@ -22,6 +22,19 @@ module.exports = mongoose => {
             },
             avatar: { type: String, required: false, default: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png' },
             address: { type: String, required: false },
+            information: {
+                type: Object,
+                required: false,
+                default: [
+                        {
+                            name: 'Nguyễn Văn A',
+                            phone: '0123456789',
+                            address: 'Hồ Chí Minh',
+                            isDefault: true
+                        }
+                    ]
+                
+            }
         },
         { timestamps: true }
     )

@@ -21,19 +21,37 @@ const options = {
 const client = mqtt.connect('tcp://smarttech-mqtt-stage.techgel.cloud:1883', options)
 //
 
+function getOrderMessage(status){
+    switch(status){
+        case Constants.ORDER_STATUS.NotProcessed: return "Đơn hàng đã được tiếp nhận";
+        case Constants.ORDER_STATUS.Processing: return "Đơn hàng đang được xử lý";
+        case Constants.ORDER_STATUS.Shipping: return "Đơn hàng đang được vận chuyển";
+        case Constants.ORDER_STATUS.Completed: return "Đơn hàng đã hoàn thành";
+        case Constants.ORDER_STATUS.Cancelled: return "Đơn hàng đã bị hủy";
+}
+}
 
 async function getOrders(req, res) {
     let orders = await Orders.getAll(req.query);
+    orders = orders.map(order => {
+        order.message = getOrderMessage(order.status);
+        return order;
+    })
     return success(req, res, orders);
 }
 
 async function getMyOrders(req, res) {
     let orders = await Orders.getByUser(req);
+    orders = orders.map(order => {
+        order.message = getOrderMessage(order.status);
+        return order;
+    })
     return success(req, res, orders);
 }
 
 async function getOneOrder(req, res) {
     let order = await Orders.getOneByParams({_id :  req.params.id});
+    order.message = getOrderMessage(order.status);
     if (!order) {
         return error(req, res, "Không tìm thấy đơn hàng");
     }

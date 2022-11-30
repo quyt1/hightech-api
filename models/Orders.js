@@ -116,7 +116,7 @@ module.exports = mongoose => {
         return await Orders.findOne(filter)
             .sort(sort)
             .select(projection)
-            .populate(population)
+            .populate(population).lean();
     }
 
     Orders.getByID = async (id) => {
