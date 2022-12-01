@@ -18,7 +18,7 @@ const options = {
     username: 'test',
     password: '123456',
 }
-const client = mqtt.connect('tcp://smarttech-mqtt-stage.techgel.cloud:1883', options)
+const client = mqtt.connect('ws://test.mosquitto.org:8080', options)
 //
 
 function getOrderMessage(status){
@@ -103,7 +103,7 @@ async function createOrder(req, res) {
         }
         await cart.save();
     }
-    client.publish('order', JSON.stringify(result))
+    client.publish('highttech-topic', JSON.stringify(result))
     return success(req, res, result);
 
 }
