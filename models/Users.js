@@ -26,14 +26,14 @@ module.exports = mongoose => {
                 type: Object,
                 required: false,
                 default: [
-                        {
-                            name: 'Nguyễn Văn A',
-                            phone: '0123456789',
-                            address: 'Hồ Chí Minh',
-                            isDefault: true
-                        }
-                    ]
-                
+                    {
+                        name: 'Nguyễn Văn A',
+                        phone: '0123456789',
+                        address: 'Hồ Chí Minh',
+                        isDefault: true
+                    }
+                ]
+
             }
         },
         { timestamps: true }
