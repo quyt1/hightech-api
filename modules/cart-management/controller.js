@@ -1,5 +1,5 @@
 const { success, error } = require('../../helper/response')
-const { Carts,Products } = require('../../models')
+const { Carts, Products } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
@@ -25,6 +25,14 @@ async function addOneProductToCart(req, res) {
         return error(req, res, validate);
     }
 
+    let product = await Products.getByID(req.body.productId)
+    if (!product) {
+        return error(req, res, "Không tìm thấy sản phẩm");
+    }
+    if (product.quantity < req.body.quantity) {
+        return error(req, res, "Số lượng sản phẩm không đủ");
+    }
+
     let cart = await Carts.getOneByParams({ user: req.user.id });
     if (!cart) {
         let cart = await Carts.createData({
@@ -41,7 +49,7 @@ async function addOneProductToCart(req, res) {
         cartItem.quantity = parseInt(cartItem.quantity) + parseInt(req.body.quantity)
     } else {
         cartItem = {
-            product:  await Products.getByID(req.body.productId),
+            product: product,
             quantity: req.body.quantity
         }
         cart.items.push(cartItem)
@@ -61,7 +69,16 @@ async function addProductsToCart(req, res) {
     if (validate) {
         return error(req, res, validate);
     }
-     let productIds = _.isString(req.body.productIds) ? JSON.parse(req.body.productIds) : req.body.productIds;
+
+    let productIds = _.isString(req.body.productIds) ? JSON.parse(req.body.productIds) : req.body.productIds;
+
+    for (let i = 0; i < productIds.length; i++) {
+        let product = await Products.getByID(productIds[i])
+        if (product.quantity == 0) {
+            return error(req, res, "Không đủ số lượng sản phẩm");
+        }
+    }
+
     let cart = await Carts.getOneByParams({ user: req.user.id });
     if (!cart) {
         let cartItems = [];
@@ -78,7 +95,7 @@ async function addProductsToCart(req, res) {
         })
         return success(req, res, cart);
     }
-    
+
     productIds.forEach(productId => {
         let cartItem = cart.items.find(item => item.product._id == productId);
         if (cartItem) {
@@ -104,6 +121,14 @@ async function updateProductQuantity(req, res) {
 
     if (validate) {
         return error(req, res, validate);
+    }
+
+    let product = await Products.getByID(req.body.productId)
+    if (!product) {
+        return error(req, res, "Không tìm thấy sản phẩm");
+    }
+    if (product.quantity < req.body.quantity) {
+        return error(req, res, "Số lượng sản phẩm không đủ");
     }
 
     let cart = await Carts.getOneByParams({ user: req.user.id });
