@@ -6,6 +6,11 @@ const jwt = require('jsonwebtoken')
 const { generateToken, verifyToken } = require('../../helper/jwt.helper');
 const Constants = require('../../constants');
 
+async function getAllCustomer(req, res) {
+    let users = await Users.getAll({role : Constants.USER_TYPE.CUSTOMER});
+    return success(req, res, users);
+}
+
 async function getAllAdmin(req, res) {
     let users = await Users.getAll({role : Constants.USER_TYPE.Admin});
     return success(req, res, users);
@@ -80,5 +85,6 @@ module.exports = {
     getOneAdmin,
     createAdmin,
     updateAdmin,
-    deleteOneAdmin
+    deleteOneAdmin,
+    getAllCustomer
 }
