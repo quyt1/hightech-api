@@ -87,7 +87,7 @@ async function getProlile(req, res) {
 function uploadAvatar(file) {
     return new Promise(function(resolve, reject) {
         request({
-            url: 'http://quyt.ddns.net:2607',
+            url: 'http://localhost:2607',
             method: 'POST',
             formData: {
                 'files': [
