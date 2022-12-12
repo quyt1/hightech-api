@@ -10,6 +10,13 @@ async function getCart(req, res) {
     if (!cart) {
         return success(req, res, {}, 'Giỏ hàng trống');
     }
+    cart = cart.toJSON()
+    cart.items = cart.items.map(item => {
+        if (item.product.quantity < item.quantity) {
+            item.outOfStock = true;
+        }
+        return item;
+    })
     return success(req, res, cart.items);
 }
 
