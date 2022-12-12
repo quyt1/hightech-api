@@ -38,7 +38,7 @@ module.exports = mongoose => {
         },
         { timestamps: true }
     )
-
+ 
     const Users = mongoose.model('Users', schema);
 
     Users.validateData = (data) => {

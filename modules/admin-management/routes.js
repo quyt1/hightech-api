@@ -13,7 +13,4 @@ router.get('/:id',ErrorHandler(controller.getOneAdmin))
 router.put('/:id', [upload.single('avatar')],ErrorHandler(controller.updateAdmin));
 router.delete('/:id', ErrorHandler(controller.deleteOneAdmin));
 
-
-
-
 module.exports = router

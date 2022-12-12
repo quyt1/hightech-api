@@ -30,7 +30,7 @@ async function createAdmin(req, res) {
         password: ['required', 'min:6'],
         fullname: ['required'],
         phone: ['required']
-    }
+    } 
 
     let validate = await Validate(req.body, rules);
 
