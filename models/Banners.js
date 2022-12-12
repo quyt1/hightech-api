@@ -53,7 +53,5 @@ module.exports = mongoose => {
         return await Banners.findByIdAndDelete(id);
     }
 
-
-
     return Banners;
 }

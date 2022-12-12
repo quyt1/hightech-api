@@ -41,7 +41,7 @@ async function create(req, res) {
 async function update(req, res) {
     const result = await Banners.updateData(req.params.id, req.body);
     return success(req, res, result);
-}
+} 
 
 async function deleteOne(req, res) {
     const result = await Banners.deleteOne(req.params.id);

@@ -11,6 +11,6 @@ router.get('/:id',Auth, ErrorHandler(controller.getOne));
 router.put('/:id',isAdmin, ErrorHandler(controller.update));
 router.delete('/:id',isAdmin, ErrorHandler(controller.deleteOne));
 
-
+ 
 
 module.exports = router
