@@ -12,7 +12,7 @@ module.exports = mongoose => {
     )
 
     const Brands = mongoose.model('Brands', schema);
-
+ 
     Brands.getAll = async (params) => {
         if (params.type && params.type != 0) {
             const { Categories } = require('../models');

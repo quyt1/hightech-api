@@ -37,7 +37,7 @@ async function create(req, res) {
     const result = await Brands.createData(req.body);
     return success(req, res, result);
 }
-
+ 
 async function update(req, res) {
     // let rules = {
     //     title: ['required'],
