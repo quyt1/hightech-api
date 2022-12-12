@@ -35,6 +35,7 @@ var bannerRouter = require('./modules/banner-management/routes');
 var adminRouter = require('./modules/admin-management/routes');
 var notificationRouter = require('./modules/notification-management/routes');
 var appDeviceRouter = require('./modules/app-device-management/routes');
+var couponRouter = require('./modules/coupon-management/routes');
 
 var app = express();
 
@@ -67,6 +68,7 @@ app.use('/banner', bannerRouter);
 app.use('/admin', adminRouter);
 app.use('/notification', notificationRouter);
 app.use('/app-device', appDeviceRouter);
+app.use('/coupon',couponRouter)
 
 
 /*

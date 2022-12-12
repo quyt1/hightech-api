@@ -14,6 +14,7 @@ module.exports = mongoose => {
             quantity: { type: Number, required: false, default: 100 },
             sold : { type: Number, required: false, default: 0 },
             specifications: { type: JSON, required: true },
+            active : { type: Boolean, required: true, default: true },
             category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true },
             brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brands', required: true },
         },
@@ -35,6 +36,12 @@ module.exports = mongoose => {
             // let brands = _.isString(params.brands) ? JSON.parse(params.brands) : params.brands;
             let query = {
                 brand: params.brands
+            }
+            params = {...params,...query }
+        }
+        if(!params.all || params.all == false) {
+            let query = {
+                active: true
             }
             params = {...params,...query }
         }
@@ -80,7 +87,10 @@ module.exports = mongoose => {
     }
 
     Products.deleteOne = async (id) => {
-        return await Products.findByIdAndDelete(id);
+        // return await Products.findByIdAndDelete(id);
+        return await Products.findByIdAndUpdate(id, {active : false}).then((data) => {
+            return Products.findById(id);
+        });
     }
 
 

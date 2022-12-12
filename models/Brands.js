@@ -5,6 +5,7 @@ module.exports = mongoose => {
     const schema = mongoose.Schema(
         {
             title: { type: String, required: true },
+            active : { type: Boolean, required: true, default: true },
             category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true },
         },
         { timestamps: true }
@@ -18,6 +19,12 @@ module.exports = mongoose => {
             let matchCategory = await Categories.getOneByParams({ type: params.type });
             let query = {
                 category: matchCategory._id,
+            }
+            params = {...params,...query }
+        }
+        if(!params.all || params.all == false) {
+            let query = {
+                active: true
             }
             params = {...params,...query }
         }
@@ -58,7 +65,10 @@ module.exports = mongoose => {
     }
 
     Brands.deleteOne = async (id) => {
-        return await Brands.findByIdAndDelete(id);
+        // return await Brands.findByIdAndDelete(id);
+        return await Brands.findByIdAndUpdate(id, {active : false}).then((data) => {
+            return Brands.findById(id);
+        });
     }
 
 

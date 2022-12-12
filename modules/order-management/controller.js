@@ -1,5 +1,5 @@
 const { success, error } = require('../../helper/response')
-const { Orders, Products, Carts, UserNotifications,AppDevices } = require('../../models')
+const { Orders, Products, Carts, UserNotifications,AppDevices,Coupons } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
@@ -82,7 +82,7 @@ async function createOrder(req, res) {
     for (let i = 0; i < req.body.items.length; i++) {
         let product = await Products.getByID(req.body.items[i].product);
         if (product.quantity < req.body.items[i].quantity) {
-            return error(req, res, "Sản phẩm " + product.name + " không đủ số lượng");
+            return error(req, res, "Sản phẩm " + product.title + " không đủ số lượng");
         } else {
             let soldCount = product.sold ? product.sold : 0
             product.quantity = product.quantity - req.body.items[i].quantity
@@ -102,6 +102,14 @@ async function createOrder(req, res) {
             }
         }
         await cart.save();
+    }
+    if(req.body.coupon){
+        let coupon = await Coupons.getOneByParams({ code: req.body.coupon });
+        if(coupon){
+            coupon.quantity = coupon.quantity - 1;
+            coupon.used = coupon.used + 1;
+            await coupon.save();
+        }
     }
     client.publish('highttech-topic', JSON.stringify(result))
     return success(req, res, result);

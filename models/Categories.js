@@ -8,6 +8,7 @@ module.exports = mongoose => {
             title: { type: String, required: true },
             icon : { type: String, required: true },
             type: { type: Number, required: true },
+            active : { type: Boolean, required: true, default: true },
         },
         { timestamps: true }
     )
@@ -15,6 +16,12 @@ module.exports = mongoose => {
     const Categories = mongoose.model('Categories', schema);
 
     Categories.getAll = async (params) => {
+        if(!params.all || params.all == false) {
+            let query = {
+                active: true
+            }
+            params = {...params,...query }
+        }
         const { filter, skip, limit, sort, projection, population, hasPaging } = await BuildQuery(params);
         if (hasPaging) {
             return Categories.paginate(filter, {
@@ -52,7 +59,10 @@ module.exports = mongoose => {
     }
 
     Categories.deleteOne = async (id) => {
-        return await Categories.findByIdAndDelete(id);
+        // return await Categories.findByIdAndDelete(id);
+        return await Categories.findByIdAndUpdate(id, {active : false}).then((data) => {
+            return Categories.findById(id);
+        });
     }
     
 
