@@ -32,16 +32,15 @@ async function addOneProductToCart(req, res) {
         return error(req, res, validate);
     }
 
-    let product = await Products.getByID(req.body.productId)
-    if (!product) {
-        return error(req, res, "Không tìm thấy sản phẩm");
-    }
-    if (product.quantity < req.body.quantity) {
-        return error(req, res, "Số lượng sản phẩm không đủ");
-    }
-
     let cart = await Carts.getOneByParams({ user: req.user.id });
+    let product = await Products.getByID(req.body.productId);
     if (!cart) {
+        if (!product) {
+            return error(req, res, "Sản phẩm không tồn tại");
+        }
+        if (product.quantity < req.body.quantity) {
+            return error(req, res, "Số lượng sản phẩm không đủ");
+        }
         let cart = await Carts.createData({
             user: req.user.id,
             items: [{
@@ -53,10 +52,16 @@ async function addOneProductToCart(req, res) {
     }
     let cartItem = cart.items.find(item => item.product._id == req.body.productId);
     if (cartItem) {
+        if (product.quantity < parseInt(cartItem.quantity) + parseInt(req.body.quantity)) {
+            return error(req, res, "Số lượng sản phẩm không đủ");
+        }
         cartItem.quantity = parseInt(cartItem.quantity) + parseInt(req.body.quantity)
     } else {
+        if (product.quantity < req.body.quantity) {
+            return error(req, res, "Số lượng sản phẩm không đủ");
+        }
         cartItem = {
-            product: product,
+            product: await Products.getByID(req.body.productId),
             quantity: req.body.quantity
         }
         cart.items.push(cartItem)
@@ -76,20 +81,18 @@ async function addProductsToCart(req, res) {
     if (validate) {
         return error(req, res, validate);
     }
-
     let productIds = _.isString(req.body.productIds) ? JSON.parse(req.body.productIds) : req.body.productIds;
-
-    for (let i = 0; i < productIds.length; i++) {
-        let product = await Products.getByID(productIds[i])
-        if (product.quantity == 0) {
-            return error(req, res, "Không đủ số lượng sản phẩm");
-        }
-    }
-
     let cart = await Carts.getOneByParams({ user: req.user.id });
     if (!cart) {
         let cartItems = [];
-        productIds.forEach((item) => {
+        productIds.forEach( async (item) =>  {
+            let product = await Products.getByID(item);
+            if (!product) {
+                return error(req, res, "Sản phẩm không tồn tại");
+            }
+            if (product.quantity < 1) {
+                return error(req, res, "Số lượng sản phẩm không đủ");
+            }
             cartItems.push({
                 product: item,
                 quantity: 1
@@ -103,11 +106,39 @@ async function addProductsToCart(req, res) {
         return success(req, res, cart);
     }
 
-    productIds.forEach(productId => {
+    productIds.forEach( async productId => {
         let cartItem = cart.items.find(item => item.product._id == productId);
         if (cartItem) {
+            let product = await Products.getByID(productId);
+            if (!product) {
+                return error(req, res, "Sản phẩm không tồn tại");
+            }
+            if (product.quantity < parseInt(cartItem.quantity) + 1) {
+                const response = {
+                    name: 'HighTech API v1',
+                    code: 422,
+                    error: true,
+                    message: "Số lượng sản phẩm không đủ",
+                    data: productId,
+                  }
+                  return res.status(422).send(response)
+            }
             cartItem.quantity = parseInt(cartItem.quantity) + 1
         } else {
+            let product = await Products.getByID(productId);
+            if (!product) {
+                return error(req, res, "Sản phẩm không tồn tại");
+            }
+            if (product.quantity < 1) {
+                const response = {
+                    name: 'HighTech API v1',
+                    code: 422,
+                    error: true,
+                    message: "Số lượng sản phẩm không đủ",
+                    data: productId,
+                  }
+                  return res.status(422).send(response)
+            }
             cart.items.push({
                 product: productId,
                 quantity: 1
