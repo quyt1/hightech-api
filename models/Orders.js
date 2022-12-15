@@ -32,10 +32,8 @@ module.exports = mongoose => {
                 type: Date,
             },
             shippingAddress: {
-                address: { type: String, required: true },
-                city: { type: String, required: true },
-                postalCode: { type: String, required: true },
-                country: { type: String, required: true },
+               type : Object,
+                required: true
             },
             paymentMethod: {
                 type: String,

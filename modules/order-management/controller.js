@@ -66,10 +66,6 @@ async function createOrder(req, res) {
         totalPrice: ['required'],
         paymentMethod: ['required'],
         shippingAddress: ['required'],
-        'shippingAddress.address': ['required'],
-        'shippingAddress.city': ['required'],
-        'shippingAddress.postalCode': ['required'],
-        'shippingAddress.country': ['required'],
         phone: ['required'],
     }
 
@@ -105,11 +101,15 @@ async function createOrder(req, res) {
     }
     if(req.body.coupon){
         let coupon = await Coupons.getOneByParams({ code: req.body.coupon });
-        if(coupon){
-            coupon.quantity = coupon.quantity - 1;
-            coupon.used = coupon.used + 1;
-            await coupon.save();
+        if(!coupon){
+            return error(req, res, "Mã giảm giá không tồn tại");
         }
+        if(coupon.quantity <= 0){
+            return error(req, res, "Mã giảm giá đã hết lượt sử dụng");
+        }
+        coupon.quantity = coupon.quantity - 1;
+        coupon.used = coupon.used + 1;
+        await coupon.save();
     }
     client.publish('highttech-topic', JSON.stringify(result))
     return success(req, res, result);
