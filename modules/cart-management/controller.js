@@ -85,19 +85,19 @@ async function addProductsToCart(req, res) {
     let cart = await Carts.getOneByParams({ user: req.user.id });
     if (!cart) {
         let cartItems = [];
-        productIds.forEach( async (item) =>  {
-            let product = await Products.getByID(item);
-            if (!product) {
-                return error(req, res, "Sản phẩm không tồn tại");
-            }
-            if (product.quantity < 1) {
-                return error(req, res, "Số lượng sản phẩm không đủ");
-            }
-            cartItems.push({
-                product: item,
-                quantity: 1
-            })
-        })
+        // productIds.forEach( async (item) =>  {
+        //     let product = await Products.getByID(item);
+        //     if (!product) {
+        //         return error(req, res, "Sản phẩm không tồn tại");
+        //     }
+        //     if (product.quantity < 1) {
+        //         return error(req, res, "Số lượng sản phẩm không đủ");
+        //     }
+        //     cartItems.push({
+        //         product: item,
+        //         quantity: 1
+        //     })
+        // })
         //
         let cart = await Carts.createData({
             user: req.user.id,
@@ -106,40 +106,40 @@ async function addProductsToCart(req, res) {
         return success(req, res, cart);
     }
 
-    productIds.forEach( async productId => {
+    await productIds.forEach( async productId => {
         let cartItem = cart.items.find(item => item.product._id == productId);
         if (cartItem) {
-            let product = await Products.getByID(productId);
-            if (!product) {
-                return error(req, res, "Sản phẩm không tồn tại");
-            }
-            if (product.quantity < parseInt(cartItem.quantity) + 1) {
-                const response = {
-                    name: 'HighTech API v1',
-                    code: 422,
-                    error: true,
-                    message: "Số lượng sản phẩm không đủ",
-                    data: productId,
-                  }
-                  return res.status(422).send(response)
-            }
+            // let product = await Products.getByID(productId);
+            // if (!product) {
+            //     return error(req, res, "Sản phẩm không tồn tại");
+            // }
+            // if (product.quantity < parseInt(cartItem.quantity) + 1) {
+            //     const response = {
+            //         name: 'HighTech API v1',
+            //         code: 422,
+            //         error: true,
+            //         message: "Số lượng sản phẩm không đủ",
+            //         data: productId,
+            //       }
+            //       return res.status(422).send(response)
+            // }
             cartItem.quantity = parseInt(cartItem.quantity) + 1
         } else {
-            let product = await Products.getByID(productId);
-            if (!product) {
-                return error(req, res, "Sản phẩm không tồn tại");
-            }
-            if (product.quantity < 1) {
-                const response = {
-                    name: 'HighTech API v1',
-                    code: 422,
-                    error: true,
-                    message: "Số lượng sản phẩm không đủ",
-                    data: productId,
-                  }
-                  return res.status(422).send(response)
-            }
-            cart.items.push({
+            // let product = await Products.getByID(productId);
+            // if (!product) {
+            //     return error(req, res, "Sản phẩm không tồn tại");
+            // }
+            // if (product.quantity < 1) {
+            //     const response = {
+            //         name: 'HighTech API v1',
+            //         code: 422,
+            //         error: true,
+            //         message: "Số lượng sản phẩm không đủ",
+            //         data: productId,
+            //       }
+            //       return res.status(422).send(response)
+            // }
+            await cart.items.push({
                 product: productId,
                 quantity: 1
             })
