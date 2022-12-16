@@ -25,7 +25,7 @@ async function login(req, res) {
     if (validate) {
         return error(req, res, validate);
     }
-
+    req.body.email = req.body.email.toLowerCase();
     const { email, password } = req.body;
     const user = await Users.getOneByParams({ email: email });
     if (!user) {
@@ -63,6 +63,7 @@ async function register(req, res) {
         return error(req, res, validate);
     }
 
+    req.body.email = req.body.email.toLowerCase();
     const user = await Users.getOneByParams({ email: req.body.email });
     if (user) {
         return error(req, res, "Email đã tồn tại");
