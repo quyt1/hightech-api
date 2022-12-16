@@ -21,8 +21,7 @@ async function getOne(req, res) {
 async function create(req, res) {
     let rules = {
         title: ['required'],
-        icon: ['required'],
-        type: ['required']
+        icon: ['required']
     }
 
     let validate = await Validate(req.body, rules);
@@ -30,6 +29,9 @@ async function create(req, res) {
     if (validate) {
         return error(req, res, validate);
     }
+    let count = await Categories.getAll({})
+    delete req.body.type;
+    req.body.type = count.length + 1;
 
     const category = await Categories.getOneByParams({ title: req.body.title });
     if (category) {
