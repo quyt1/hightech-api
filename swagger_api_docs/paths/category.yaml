@@ -38,11 +38,6 @@ paths:
           description: 
           required: true
           type: string
-        - name: type
-          in: formData
-          description:
-          required: true
-          type: integer
       responses:
         200:
           description: Responses Successful
