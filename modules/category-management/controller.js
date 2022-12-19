@@ -56,7 +56,7 @@ async function update(req, res) {
     // }
 
     const category = await Categories.getOneByParams({ title: req.body.title });
-    if (category) {
+    if (category && category._id != req.params.id) {
         return error(req, res, "Loại sản phẩm đã tồn tại");
     }
     const result = await Categories.updateData(req.params.id, req.body);

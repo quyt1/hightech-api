@@ -57,7 +57,7 @@ async function create(req, res) {
         return error(req, res, validate);
     }
 
-    const result = await Coupons.createData(body);
+    const result = await Coupons.createData(req.body);
     return success(req, res, result);
 }
 
