@@ -14,6 +14,8 @@ async function getCart(req, res) {
     cart.items = cart.items.map(item => {
         if (item.product.quantity < item.quantity) {
             item.outOfStock = true;
+        }else{
+            item.outOfStock = false;
         }
         return item;
     })
