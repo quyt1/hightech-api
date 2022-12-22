@@ -3,7 +3,7 @@ const { AppDevices } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 
 async function create(req, res) {
-    req.body.user = req.user.id;
+    // req.body.user = req.user.id;
     let rules = {
         deviceToken: ['required']
     }

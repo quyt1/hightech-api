@@ -1,5 +1,5 @@
 const { success, error } = require('../../helper/response')
-const { Users, VerifyCodes } = require('../../models')
+const { Users, VerifyCodes,AppDevices } = require('../../models')
 const Validate = require('../../helper/get-errors-messages-validate');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
@@ -37,6 +37,14 @@ async function login(req, res) {
         return error(req, res, "Thông tin đăng nhập không đúng");
     }
     // const token = jwt.sign({ user }, 'secretKey')
+    if(req.body.deviceToken){
+      let device = await AppDevices.getOneByParams({ deviceToken: req.body.deviceToken });
+      if (device) {
+          await AppDevices.updateData(device._id, {user: user._id});
+      }else{
+        await AppDevices.createData({deviceToken: req.body.deviceToken, user: user._id});
+      }
+    }
     const token = await generateToken(user)
     let result = {
         token: token,

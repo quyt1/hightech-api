@@ -5,7 +5,7 @@ module.exports = mongoose => {
     const schema = mongoose.Schema(
         {
             deviceToken: { type: String, required: true, unique: true, index: true },
-            user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
         },
         { timestamps: true }
     )
