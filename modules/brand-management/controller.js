@@ -31,7 +31,7 @@ async function create(req, res) {
     }
 
     const brand = await Brands.getOneByParams({ title: req.body.title });
-    if (brand) {
+    if (brand && brand.category == req.body.category) {
         return error(req, res, "Thương hiệu đã tồn tại");
     }
     const result = await Brands.createData(req.body);
