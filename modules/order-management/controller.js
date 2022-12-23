@@ -15,10 +15,10 @@ const options = {
     connectTimeout: 4000,
     // Auth
     clientId: 'HighTech Server',
-    username: 'test',
+    username: 'hightech',
     password: '123456',
 }
-const client = mqtt.connect('ws://test.mosquitto.org:8080', options)
+const client = mqtt.connect('ws://192.168.1.10:8887', options)
 //
 
 function getOrderMessage(status){
