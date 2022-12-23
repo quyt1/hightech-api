@@ -19,6 +19,9 @@ const options = {
     password: '123456',
 }
 const client = mqtt.connect('ws://192.168.1.10:8887', options)
+client.on('connect', () => {
+    console.log('MQTT Client connected')
+})
 //
 
 function getOrderMessage(status){
