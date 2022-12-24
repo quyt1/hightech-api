@@ -11,7 +11,7 @@ module.exports = mongoose => {
             costPrice: { type: Number, required: true },
             salePrice: { type: Number, required: false },
             salePercent: { type: Number, required: false },
-            quantity: { type: Number, required: false, default: 100 },
+            quantity: { type: Number, required: false, default: 100,min : 0 },
             sold : { type: Number, required: false, default: 0 },
             specifications: { type: JSON, required: true },
             active : { type: Boolean, required: true, default: true },
