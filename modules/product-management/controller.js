@@ -109,6 +109,7 @@ async function update(req, res) {
     // if (product) {
     //     return error(req, res, "Loại sản phẩm đã tồn tại");
     // }
+    req.body.salePrice = req.body.costPrice - (req.body.costPrice * req.body.salePercent / 100)
     const result = await Products.updateData(req.params.id, req.body);
     return success(req, res, result);
 }
