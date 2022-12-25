@@ -111,7 +111,6 @@ function uploadAvatar(file) {
 }
 
 async function updateProfile(req, res) {
-    delete req.body.avatar;
     delete req.body._id;
     if (req.file) {
         let imgUrl = await uploadAvatar(req.file)
