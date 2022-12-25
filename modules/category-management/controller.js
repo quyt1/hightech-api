@@ -29,7 +29,7 @@ async function create(req, res) {
     if (validate) {
         return error(req, res, validate);
     }
-    let count = await Categories.getAll({})
+    let count = await Categories.getAll({all: true})
     delete req.body.type;
     req.body.type = count.length + 1;
 
@@ -55,6 +55,7 @@ async function update(req, res) {
     //     return error(req, res, validate);
     // }
 
+    delete req.body.type;
     const category = await Categories.getOneByParams({ title: req.body.title });
     if (category && category._id != req.params.id) {
         return error(req, res, "Loại sản phẩm đã tồn tại");
